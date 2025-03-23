@@ -7,12 +7,17 @@ interface TileProps {
 }
 
 const Tile = ({ value, index, onClick, isMovable }: TileProps) => {
-  // Handle empty tile - always show as light yellow
+  // Handle empty tile - make it very obvious with a bright yellow color
   if (value === null) {
     return (
       <div 
-        className="w-full aspect-square flex items-center justify-center bg-[#FFF9C4] border-2 border-[#F9E79F] rounded"
-        style={{ backgroundColor: "#FFF9C4", borderColor: "#F9E79F" }}
+        className="w-full aspect-square flex items-center justify-center rounded"
+        style={{ 
+          backgroundColor: "#FFEB3B", 
+          borderWidth: "2px",
+          borderStyle: "solid",
+          borderColor: "#FBC02D"
+        }}
         data-empty="true"
       />
     );

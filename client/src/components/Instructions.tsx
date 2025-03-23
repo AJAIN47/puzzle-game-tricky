@@ -22,7 +22,7 @@ const Instructions = () => {
           <div className="bg-brown text-white p-1">6</div>
           <div className="bg-white border border-gray-300 p-1">7</div>
           <div className="bg-brown text-white p-1">8</div>
-          <div className="p-1" style={{ backgroundColor: "#FFF9C4", borderWidth: "2px", borderColor: "#F9E79F", borderStyle: "solid" }}></div>
+          <div className="p-1" style={{ backgroundColor: "#FFEB3B", borderWidth: "2px", borderColor: "#FBC02D", borderStyle: "solid", borderRadius: "0.25rem" }}></div>
         </div>
       </div>
     </div>

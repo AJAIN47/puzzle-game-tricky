@@ -59,17 +59,22 @@ export function createSolvablePuzzle(targetSequence: number[]): {
     // Shuffle the target sequence
     const shuffledNumbers = shuffle([...targetSequence]);
     
-    // Create the puzzle array with empty space at position 8
-    puzzleArray = [...shuffledNumbers];
-    puzzleArray.splice(emptyPos, 0, null);
-    // Remove the extra element to keep array size at 9
-    puzzleArray.pop();
+    // Create an array with 9 positions, put the empty space at position 8
+    puzzleArray = Array(9).fill(null);
     
+    // Fill positions 0-7 with shuffled numbers
+    for (let i = 0; i < 8; i++) {
+      puzzleArray[i] = shuffledNumbers[i];
+    }
+    
+    // Position 8 remains null (empty)
   } while (
     // Make sure the puzzle is solvable and not already solved
     !isSolvable(puzzleArray) || 
     checkWinCondition(puzzleArray, targetSequence)
   );
+  
+  console.log("Created puzzle:", puzzleArray, "with empty at:", emptyPos);
   
   return { puzzleArray, emptyPos };
 }
