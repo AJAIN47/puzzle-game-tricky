@@ -44,6 +44,12 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        // Brown color palette for the puzzle
+        brown: {
+          DEFAULT: "#8B4513", // SaddleBrown
+          light: "#D2B48C", // Tan
+          dark: "#5E2605", // Dark Brown
+        },
         chart: {
           "1": "hsl(var(--chart-1))",
           "2": "hsl(var(--chart-2))",
