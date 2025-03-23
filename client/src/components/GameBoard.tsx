@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Tile from "@/components/Tile";
-import { checkWinCondition } from "@/utils/gameUtils";
+import { checkWinCondition, getHint } from "@/utils/gameUtils";
 
 interface GameBoardProps {
   targetSequence: number[];
@@ -24,6 +24,18 @@ const GameBoard = ({
   onNewGame,
   onWin
 }: GameBoardProps) => {
+  const [hintTileIndex, setHintTileIndex] = useState<number | null>(null);
+  
+  // Get a hint for the next move
+  const handleHint = () => {
+    const suggestedTileIndex = getHint(currentBoard, targetSequence);
+    setHintTileIndex(suggestedTileIndex);
+    
+    // Clear hint after 3 seconds
+    setTimeout(() => {
+      setHintTileIndex(null);
+    }, 3000);
+  };
   // Get adjacent tiles to the empty tile
   const getAdjacentTiles = (index: number) => {
     const row = Math.floor(index / 3);
@@ -105,12 +117,21 @@ const GameBoard = ({
             emptyTileIndex={emptyTileIndex}
             onClick={() => handleTileClick(index)}
             isMovable={getAdjacentTiles(emptyTileIndex).includes(index)}
+            isHint={index === hintTileIndex}
           />
         ))}
       </div>
       
-      <div className="text-center mt-4 font-medium">
-        Moves: <span>{moves}</span>
+      <div className="flex justify-between items-center mt-4">
+        <div className="font-medium">
+          Moves: <span>{moves}</span>
+        </div>
+        <Button 
+          onClick={handleHint}
+          className="bg-yellow-500 text-white px-3 py-1 rounded text-sm font-bold hover:bg-opacity-90 transition"
+        >
+          Get Hint
+        </Button>
       </div>
     </div>
   );

@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import UserIdForm from "@/components/UserIdForm";
 import GameBoard from "@/components/GameBoard";
 import Instructions from "@/components/Instructions";
 import WinModal from "@/components/WinModal";
+import Leaderboard from "@/components/Leaderboard";
 import { createSolvablePuzzle } from "@/utils/gameUtils";
+import { saveToLeaderboard } from "@/utils/localStorage";
+import { LeaderboardEntry } from "@/types/leaderboard";
 
 const Game = () => {
   const [gameStarted, setGameStarted] = useState(false);
@@ -12,6 +15,59 @@ const Game = () => {
   const [emptyTileIndex, setEmptyTileIndex] = useState(2);
   const [moves, setMoves] = useState(0);
   const [showWinModal, setShowWinModal] = useState(false);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [playerInfo, setPlayerInfo] = useState<{
+    firstName: string;
+    lastName: string;
+    userId: string;
+  } | null>(null);
+  
+  // Timer refs
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const startTimeRef = useRef<number | null>(null);
+  
+  // Start the timer when game starts
+  useEffect(() => {
+    if (gameStarted && !showWinModal) {
+      startTimeRef.current = Date.now();
+      timerRef.current = setInterval(() => {
+        if (startTimeRef.current) {
+          const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+          setTimeElapsed(elapsed);
+        }
+      }, 1000);
+    }
+    
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [gameStarted, showWinModal]);
+  
+  // Stop timer and save score when win modal shows
+  useEffect(() => {
+    if (showWinModal && playerInfo) {
+      // Stop the timer
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+      
+      // Save to leaderboard
+      const entry: LeaderboardEntry = {
+        firstName: playerInfo.firstName,
+        lastName: playerInfo.lastName,
+        userId: playerInfo.userId,
+        timeElapsed,
+        moves,
+        timestamp: Date.now()
+      };
+      
+      saveToLeaderboard(entry);
+    }
+  }, [showWinModal, playerInfo, timeElapsed, moves]);
 
   const handleStartGame = (userId: string) => {
     // Take the first 8 digits as the target sequence
