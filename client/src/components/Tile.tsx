@@ -4,10 +4,9 @@ interface TileProps {
   emptyTileIndex: number;
   onClick: () => void;
   isMovable: boolean;
-  isHint?: boolean;
 }
 
-const Tile = ({ value, index, onClick, isMovable, isHint = false }: TileProps) => {
+const Tile = ({ value, index, onClick, isMovable }: TileProps) => {
   // Handle empty tile - make it very obvious with a bright yellow color
   if (value === null) {
     return (
@@ -35,7 +34,7 @@ const Tile = ({ value, index, onClick, isMovable, isHint = false }: TileProps) =
           : 'bg-brown text-white'
         }
         ${isMovable ? 'cursor-pointer hover:opacity-90 transition' : 'opacity-90'}
-        ${isHint ? 'ring-4 ring-green-500 animate-pulse' : ''}`}
+        `}
       onClick={isMovable ? onClick : undefined}
     >
       {value}

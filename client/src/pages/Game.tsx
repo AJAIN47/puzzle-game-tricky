@@ -112,44 +112,49 @@ const Game = () => {
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <header className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-brown mb-2">Student ID Number Puzzle</h1>
-        <p className="text-lg text-brown-dark">Arrange the numbers to match your Student ID</p>
+      <h1 className="text-3xl md:text-4xl font-bold text-brown mb-2">Student ID Number Puzzle</h1>
+      <p className="text-lg text-brown-dark">Arrange the numbers to match your Student ID</p>
       </header>
 
       <div id="game-container" className="bg-white rounded-lg shadow-lg p-6 mb-8">
-        {!gameStarted ? (
-          <UserIdForm onSubmit={handleStartGame} />
-        ) : (
-          <GameBoard
-            targetSequence={targetSequence}
-            currentBoard={currentBoard}
-            emptyTileIndex={emptyTileIndex}
-            moves={moves}
-            onMove={(newBoard, newEmptyIndex) => {
-              setCurrentBoard(newBoard);
-              setEmptyTileIndex(newEmptyIndex);
-              setMoves(moves + 1);
-            }}
-            onShuffle={handleShuffle}
-            onNewGame={handleNewGame}
-            onWin={handleWin}
-          />
-        )}
+      {!gameStarted ? (
+        <UserIdForm onSubmit={handleStartGame} />
+      ) : (
+        <GameBoard
+        targetSequence={targetSequence}
+        currentBoard={currentBoard}
+        emptyTileIndex={emptyTileIndex}
+        moves={moves}
+        onMove={(newBoard, newEmptyIndex) => {
+          setCurrentBoard(newBoard);
+          setEmptyTileIndex(newEmptyIndex);
+          setMoves(moves + 1);
+        }}
+        onShuffle={handleShuffle}
+        onNewGame={handleNewGame}
+        onWin={handleWin}
+        />
+      )}
 
-        <Instructions />
+      <Instructions />
       </div>
 
       <footer className="text-center text-sm text-gray-500">
-        <p>&copy; {new Date().getFullYear()} Student ID Number Puzzle. All rights reserved.</p>
+      <p>&copy; {new Date().getFullYear()} Student ID Number Puzzle. All rights reserved.</p>
       </footer>
 
       {showWinModal && (
-        <WinModal 
-          moves={moves}
-          timeElapsed={timeElapsed}
-          onNewGame={handleNewGame} 
-          onClose={() => setShowWinModal(false)} 
-        />
+      <WinModal 
+        moves={moves}
+        timeElapsed={timeElapsed}
+        onNewGame={handleNewGame} 
+        onClose={
+          () => 
+            {setShowWinModal(false);
+          handleNewGame()
+            }
+        } 
+      />
       )}
     </div>
   );

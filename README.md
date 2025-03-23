@@ -32,7 +32,7 @@ A personalized number puzzle game where players rearrange shuffled numbers to ma
 1. Clone the repository
 2. Install dependencies with `npm install`
 3. Start the development server with `npm run dev`
-4. Visit `http://localhost:5000` in your browser
+4. Visit `http://localhost:5001` in your browser
 
 ## Deployment
 

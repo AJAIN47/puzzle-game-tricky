@@ -97,36 +97,6 @@ export function checkWinCondition(board: (number | null)[], targetSequence: numb
 }
 
 /**
- * Get a hint for the next best move
- * Returns the index of the tile that should be moved next
- */
-export function getHint(board: (number | null)[], targetSequence: number[]): number | null {
-  // Find the empty tile position
-  const emptyTileIndex = board.findIndex(tile => tile === null);
-  if (emptyTileIndex === -1) return null;
-  
-  // Get possible move positions (adjacent to empty tile)
-  const possibleMoves = getAdjacentPositions(emptyTileIndex);
-  
-  // Find the first position that doesn't match the target sequence
-  for (const position of possibleMoves) {
-    const value = board[position];
-    if (value !== null) {
-      // Check if moving this tile would place it in its correct position
-      const targetIndex = targetSequence.indexOf(value);
-      
-      // If this tile isn't in the right place and moving it would help
-      if (position !== targetIndex) {
-        return position;
-      }
-    }
-  }
-  
-  // If no obvious move, just return the first possible move
-  return possibleMoves.length > 0 ? possibleMoves[0] : null;
-}
-
-/**
  * Get adjacent positions to a given index on the 3x3 board
  */
 export function getAdjacentPositions(index: number): number[] {
