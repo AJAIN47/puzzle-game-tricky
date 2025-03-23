@@ -69,9 +69,12 @@ const Game = () => {
     }
   }, [showWinModal, playerInfo, timeElapsed, moves]);
 
-  const handleStartGame = (userId: string) => {
+  const handleStartGame = (userData: { userId: string; firstName: string; lastName: string }) => {
+    // Store player info
+    setPlayerInfo(userData);
+    
     // Take the first 8 digits as the target sequence
-    const newTargetSequence = userId.substring(0, 8).split('').map(Number);
+    const newTargetSequence = userData.userId.substring(0, 8).split('').map(Number);
     setTargetSequence(newTargetSequence);
     
     // Create a solvable puzzle
@@ -79,7 +82,9 @@ const Game = () => {
     setCurrentBoard(puzzleArray);
     setEmptyTileIndex(emptyPos);
     
+    // Reset game state
     setMoves(0);
+    setTimeElapsed(0);
     setGameStarted(true);
   };
 
@@ -140,7 +145,8 @@ const Game = () => {
 
       {showWinModal && (
         <WinModal 
-          moves={moves} 
+          moves={moves}
+          timeElapsed={timeElapsed}
           onNewGame={handleNewGame} 
           onClose={() => setShowWinModal(false)} 
         />

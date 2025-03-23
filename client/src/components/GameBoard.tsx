@@ -8,6 +8,7 @@ interface GameBoardProps {
   currentBoard: (number | null)[];
   emptyTileIndex: number;
   moves: number;
+  timeElapsed?: number;
   onMove: (newBoard: (number | null)[], newEmptyIndex: number) => void;
   onShuffle: () => void;
   onNewGame: () => void;
@@ -19,11 +20,18 @@ const GameBoard = ({
   currentBoard,
   emptyTileIndex,
   moves,
+  timeElapsed = 0,
   onMove,
   onShuffle,
   onNewGame,
   onWin
 }: GameBoardProps) => {
+  // Format time as minutes:seconds
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
   const [hintTileIndex, setHintTileIndex] = useState<number | null>(null);
   
   // Get a hint for the next move
