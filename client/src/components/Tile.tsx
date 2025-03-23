@@ -10,7 +10,7 @@ const Tile = ({ value, index, onClick, isMovable }: TileProps) => {
   if (value === null) {
     return (
       <div 
-        className="w-full aspect-square flex items-center justify-center bg-brown-light bg-opacity-30 border-2 border-gray-200 rounded"
+        className="w-full aspect-square flex items-center justify-center bg-yellow-100 border border-yellow-200 rounded"
         data-empty="true"
       />
     );
