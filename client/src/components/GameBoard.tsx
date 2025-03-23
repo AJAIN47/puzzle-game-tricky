@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Tile from "@/components/Tile";
+import { checkWinCondition } from "@/utils/gameUtils";
 
 interface GameBoardProps {
   targetSequence: number[];
@@ -53,21 +54,12 @@ const GameBoard = ({
     }
   };
 
-  // Check win condition
-  const checkWinCondition = () => {
-    // Convert the current board numbers to a sequence without the empty tile
-    const currentSequence = currentBoard.filter(num => num !== null);
-    
-    // Check if current sequence matches target sequence
-    return JSON.stringify(currentSequence) === JSON.stringify(targetSequence);
-  };
-
   // Check for win after each move
   useEffect(() => {
-    if (currentBoard.length > 0 && checkWinCondition()) {
+    if (currentBoard.length > 0 && checkWinCondition(currentBoard, targetSequence)) {
       onWin();
     }
-  }, [currentBoard]);
+  }, [currentBoard, targetSequence, onWin]);
 
   return (
     <div className="mb-8">

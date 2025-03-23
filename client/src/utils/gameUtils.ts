@@ -46,43 +46,47 @@ export function checkArraysEqual<T>(arr1: T[], arr2: T[]): boolean {
 
 /**
  * Creates a solvable puzzle from the target sequence
+ * The empty space is always placed at position 8 (bottom right)
  */
 export function createSolvablePuzzle(targetSequence: number[]): {
   puzzleArray: (number | null)[];
   emptyPos: number;
 } {
   let puzzleArray: (number | null)[];
-  let emptyPos: number;
+  const emptyPos = 8; // Always place empty tile at bottom right (index 8)
   
   do {
-    // Create array with the target sequence and one null for empty space
-    puzzleArray = [...targetSequence];
-    // Randomly place the empty tile
-    emptyPos = Math.floor(Math.random() * 9);
+    // Shuffle the target sequence
+    const shuffledNumbers = shuffle([...targetSequence]);
+    
+    // Create the puzzle array with empty space at position 8
+    puzzleArray = [...shuffledNumbers];
     puzzleArray.splice(emptyPos, 0, null);
-    
-    // Shuffle the non-null elements
-    const nonNullElements = puzzleArray.filter(item => item !== null) as number[];
-    const shuffledNonNull = shuffle(nonNullElements);
-    
-    // Reconstruct the array with the null in the same position
-    puzzleArray = [];
-    let nonNullIndex = 0;
-    
-    for (let i = 0; i < 9; i++) {
-      if (i === emptyPos) {
-        puzzleArray.push(null);
-      } else {
-        puzzleArray.push(shuffledNonNull[nonNullIndex]);
-        nonNullIndex++;
-      }
-    }
+    // Remove the extra element to keep array size at 9
+    puzzleArray.pop();
     
   } while (
     // Make sure the puzzle is solvable and not already solved
     !isSolvable(puzzleArray) || 
-    checkArraysEqual(puzzleArray.filter(n => n !== null) as number[], targetSequence)
+    checkWinCondition(puzzleArray, targetSequence)
   );
   
   return { puzzleArray, emptyPos };
+}
+
+/**
+ * Check if the current board matches the win condition:
+ * - First 8 positions contain the target sequence in order
+ * - Empty space is at the bottom right (position 8)
+ */
+export function checkWinCondition(board: (number | null)[], targetSequence: number[]): boolean {
+  // Check if empty tile is at position 8
+  if (board[8] !== null) return false;
+  
+  // Check if first 8 positions match target sequence
+  for (let i = 0; i < 8; i++) {
+    if (board[i] !== targetSequence[i]) return false;
+  }
+  
+  return true;
 }
